@@ -1,5 +1,5 @@
 // postController.js
-const db = require('../config/db');
+const db = require('../db');
 
 // AddPost: validate and create post after tier/category selection
 exports.createPost = async (req, res) => {
