@@ -25,6 +25,16 @@ CREATE TABLE tiers (
     description TEXT
 );
 
+-- Users Table: Stores user information
+CREATE TABLE users (
+    user_id SERIAL PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    rating NUMERIC(3, 2) DEFAULT 5.0, -- Added user rating
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Posts Table: Stores user-created posts
 CREATE TABLE posts (
     post_id SERIAL PRIMARY KEY,
@@ -34,10 +44,22 @@ CREATE TABLE posts (
     title VARCHAR(255) NOT NULL,
     description TEXT,
     price NUMERIC(10, 2) NOT NULL,
+    original_price NUMERIC(10, 2), -- Added for showing discounts
+    condition VARCHAR(50), -- e.g., 'New', 'Used'
+    age VARCHAR(50), -- e.g., '1 year old'
+    location VARCHAR(255), -- Simple string location
     status VARCHAR(20) NOT NULL DEFAULT 'active', -- e.g., 'active', 'sold', 'expired'
+    views INT DEFAULT 0, -- Added view count
     latitude NUMERIC(9, 6),
     longitude NUMERIC(9, 6),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Post Images Table: Stores multiple images for each post
+CREATE TABLE post_images (
+    image_id SERIAL PRIMARY KEY,
+    post_id INT REFERENCES posts(post_id) ON DELETE CASCADE,
+    image_url VARCHAR(255) NOT NULL
 );
 
 -- Sales Table: Tracks the sale of each post
